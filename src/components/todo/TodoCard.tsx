@@ -9,7 +9,7 @@ type TTodoCardProps = {
   isCompleted?: boolean;
 };
 
-const TodoCard = ({ id, task, description, isCompleted }: TTodoCardProps) => {
+const TodoCard = ({ id, title, description, completed }: TTodoCardProps) => {
   const dispatch = useAppDispatch();
   const toggoleState = () => {
     dispatch(toggleComplete(id));
@@ -22,11 +22,11 @@ const TodoCard = ({ id, task, description, isCompleted }: TTodoCardProps) => {
         name="complete"
         id="complete"
       />
-      <p className="font-semibold">{task}</p>
+      <p className="font-semibold">{title}</p>
       {/* <p>Time</p> */}
       <div>
         {" "}
-        {isCompleted ? (
+        {completed ? (
           <p className="text-green-500">Done</p>
         ) : (
           <p className="text-red-500">Pending</p>
