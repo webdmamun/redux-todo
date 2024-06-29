@@ -47,7 +47,7 @@ const TodoCard = ({
         <div
           className={`size-3 rounded-full ${
             priority === "high" ? "bg-red-500" : null
-          }${priority === "medium" ? "bg-yellow-500" : null}${
+          } ${priority === "medium" ? "bg-yellow-500" : null} ${
             priority === "low" ? "bg-green-500" : null
           }`}
         ></div>
