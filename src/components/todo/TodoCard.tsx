@@ -1,39 +1,69 @@
-import { useAppDispatch } from "@/redux/hook";
 import { Button } from "../ui/button";
-import { removeTodo, toggleComplete } from "@/redux/features/todoSlice";
+import { removeTodo } from "@/redux/features/todoSlice";
+import { useUpdateTodoMutation } from "@/redux/api/api";
 
 type TTodoCardProps = {
-  id: string;
-  task: string;
+  _id: string;
+  title: string;
   description: string;
   isCompleted?: boolean;
+  priority: string;
 };
 
-const TodoCard = ({ id, title, description, completed }: TTodoCardProps) => {
-  const dispatch = useAppDispatch();
+const TodoCard = ({
+  _id,
+  title,
+  priority,
+  isCompleted,
+  description,
+}: TTodoCardProps) => {
+  const [updateTodo, { isLoading, isError }] = useUpdateTodoMutation();
+  // const dispatch = useAppDispatch();
+
   const toggoleState = () => {
-    dispatch(toggleComplete(id));
+    // dispatch(toggleComplete(id));
+    const taskData = {
+      title,
+      description,
+      priority,
+      isCompleted: !isCompleted,
+    };
+    const options = { id: _id, data: taskData };
+    updateTodo(options);
   };
   return (
     <div className="bg-white rounded-md p-3 flex justify-between items-center">
       <input
+        className="mr-3"
         onChange={toggoleState}
         type="checkbox"
         name="complete"
         id="complete"
+        checked={isCompleted}
       />
-      <p className="font-semibold">{title}</p>
+      <p className="font-semibold flex-1">{title}</p>
+
+      <div className="flex-1 flex items-center gap-2">
+        <div
+          className={`size-3 rounded-full ${
+            priority === "high" ? "bg-red-500" : null
+          }${priority === "medium" ? "bg-yellow-500" : null}${
+            priority === "low" ? "bg-green-500" : null
+          }`}
+        ></div>
+        <p>{priority}</p>
+      </div>
+
       {/* <p>Time</p> */}
-      <div>
-        {" "}
-        {completed ? (
+      <div className="flex-1">
+        {isCompleted ? (
           <p className="text-green-500">Done</p>
         ) : (
           <p className="text-red-500">Pending</p>
         )}
       </div>
 
-      <p>{description}</p>
+      <p className="flex-[2]">{description}</p>
       <div className=" space-x-4">
         <Button onClick={() => dispatch(removeTodo(id))} className="bg-red-500">
           <svg
